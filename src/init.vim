@@ -1,3 +1,4 @@
+" Original file is located in the <>git repo>/src/init.vim
 inoremap ( ()<Esc>i
 inoremap { {}<Esc>i
 inoremap {<CR> {<CR>}<Esc>O
