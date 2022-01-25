@@ -21,8 +21,7 @@ module Config
   
   def Config.install_vim_plug_manager(windows)
     
-    encoded_cmd = Base64.strict_encode64(VIM_PLUG_INSTALL_WIN.encode('utf-16le'))
-    system("powershell -Command #{encoded_cmd}") if windows
+    system("powershell #{VIM_PLUG_INSTALL_WIN}") if windows
     system(VIM_PLUG_INSTALL_LIN) unless windows
   end
 
