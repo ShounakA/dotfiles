@@ -11,7 +11,7 @@ module Config
 
     File.symlink(file_path, File.expand_path(CONFIG_PATH_LIN)) unless windows or File.exists?(CONFIG_PATH_LIN)
 
-    FileUtils.mkdir("{ENV['USERPROFILE']}/AppData/Local/nvim") unless File.exists?("{ENV['USERPROFILE']}/AppData/Local/nvim")
+    FileUtils.mkdir("#{ENV['USERPROFILE']}/AppData/Local/nvim") unless File.exists?("#{ENV['USERPROFILE']}/AppData/Local/nvim")
     File.symlink(file_path, File.expand_path(CONFIG_PATH_WIN)) if windows and not File.exists?(CONFIG_PATH_WIN)
   end
 
