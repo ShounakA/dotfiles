@@ -23,7 +23,7 @@ opt.smarttab = true
 opt.smartindent = true
 opt.tabstop= 4
 opt.shiftwidth =  4
-g.mapleader = ","
+g.mapleader = " "
 
 api.nvim_set_keymap(
 	"i",
@@ -46,12 +46,40 @@ api.nvim_set_keymap(
   	{ noremap = true }
 )
 
+api.nvim_set_keymap(
+	"n",
+	"<leader>n",
+	":NERDTreeFocus<CR>",
+	{ noremap = true }
+)
+
+api.nvim_set_keymap(
+	"n",
+	"<leader>nn",
+	":NERDTree<CR>",
+	{ noremap = true }
+)
+
+api.nvim_set_keymap(
+	"n",
+	"<leader>nt",
+	":NERDTreeToggle<CR>",
+	{ noremap = true }
+)
+
+api.nvim_set_keymap(
+	"n",
+	"<leader>nf",
+	":NERDTreeFind<CR>",
+	{ noremap = true }
+)
+
 local use = require('packer').use
 
 require('packer').startup(function()
-	--use { "nvim-telescope/telescope.nvim",
-    --	requires = { {"nvim-lua/plenary.nvim"} },
-  	--}
+	use { "nvim-telescope/telescope.nvim",
+    	requires = { {"nvim-lua/plenary.nvim"} },
+  	}
 	use "preservim/nerdtree"
 
 	use "neovim/nvim-lspconfig"
@@ -60,6 +88,8 @@ require('packer').startup(function()
     use 'saadparwaiz1/cmp_luasnip' -- Snippets source for nvim-cmp
     use 'L3MON4D3/LuaSnip' -- Snippets plugin
 	
+	use 'mfussenegger/nvim-dap'
+	use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
 	if packer_bootstrap then
     	require('packer').sync()
   	end
@@ -110,6 +140,34 @@ require('lspconfig').csharp_ls.setup{
 	capabilities = capabilities,
   }
 
+api.nvim_set_keymap(
+	"n",
+	"<leader>ff",
+	":Telescope find_files<CR>",
+	{ noremap = true }
+)
+
+api.nvim_set_keymap(
+	"n",
+	"<leader>fg",
+	":Telescope live_grep<CR>",
+	{ noremap = true }
+)
+
+api.nvim_set_keymap(
+	"n",
+	"<leader>fb",
+	":Telescope buffers<CR>",
+	{ noremap = true }
+)
+
+api.nvim_set_keymap(
+	"n",
+	"<leader>fh",
+	":Telescope help_tags<CR>",
+	{ noremap = true }
+)
+
 -- luasnip setup
 local luasnip = require 'luasnip'
 
@@ -153,3 +211,22 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+local dap = require('dap')
+dap.adapters.coreclr = {
+  type = 'executable',
+  command = '~/AppData/Local/netcoredbg/netcoredbg',
+  args = {'--interpreter=vscode'}
+}
+
+dap.configurations.cs = {
+  {
+    type = "coreclr",
+    name = "launch - netcoredbg",
+    request = "launch",
+    program = function()
+        return vim.fn.input('Path to dll', vim.fn.getcwd() .. "\\bin\\Debug\\", 'file')
+    end,
+  },
+}
+require("dapui").setup()
